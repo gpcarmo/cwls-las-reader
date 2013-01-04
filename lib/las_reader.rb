@@ -27,6 +27,7 @@ module LasReader
     mnemonic = info.match(/(\w+)\s*\.(\S*)\s+(.*):\s*(.*)/)
     unless mnemonic.nil?
       @curves["#{mnemonic[1]}"] = Curve.new(mnemonic[1],mnemonic[2],mnemonic[3],mnemonic[4])
+      @acurves << mnemonic[1]
     end
   end
 
@@ -139,10 +140,8 @@ module LasReader
     d=info.scan(/[-]?[0-9]+.[0-9]+/)
     a = temp_array + d if not d.nil?
     if a.size == self.curves.size
-      i=0
       self.curves.each do |k,v|
-        v.log_data << a[i].to_f
-        i+=1
+        v.log_data << a[@acurves.index(k)].to_f
       end
       a = []
     end
@@ -150,12 +149,10 @@ module LasReader
   end
 
   def log_nowrap_data(info)
-    i=0
     d=info.scan(/[-]?[0-9]+.[0-9]+/)
     unless d.nil?
       self.curves.each do |k,v|
-        v.log_data << d[i].to_f
-        i+=1
+        v.log_data << d[@acurves.index(k)].to_f
       end
     end
   end
@@ -165,6 +162,7 @@ module LasReader
     temp_array = []
     @curves = {}
     @parameters = {}
+    @acurves = []
 
     read_state = 0
 

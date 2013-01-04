@@ -1,6 +1,11 @@
 # LasReader
 
-TODO: Write a gem description
+cwls-las-reader
+Ruby gem for reading CWLS LAS files
+
+The Canadian Well Logging Society's Floppy Disk Committee has designed a standard format for log data on floppy disks. It is known as the LAS format (Log ASCII Standard). LAS consists of files written in ASCII containing minimal header information and is intended for optical curves only.
+
+Details of the LAS format are described in this paper (http://www.cwls.org/docs/LAS12_Standards.txt).
 
 ## Installation
 
@@ -16,9 +21,11 @@ Or install it yourself as:
 
     $ gem install las_reader
 
-## Usage
-
-TODO: Write usage instructions here
+## Quick irb Usage
+    
+    irb> require 'rubygems'
+    irb> require 'las_reader'
+    irb> my_las = CWLSLas.new('my_well.las')
 
 ## Contributing
 

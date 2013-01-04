@@ -46,21 +46,20 @@ describe "CWLSLas LAS reader" do
     end
   end
 
-
-  describe CWLSLas, "#curves" do
+  describe CWLSLas, "#curve" do
     context "get depth curve from no_wrap mode file 'example1.las'" do
-      c=LasReader::Curve.new("DEPT","M","","Depth")
-      c.add(1670.0, 1669.875 , 1669.750)
+      c = [1670.0, 1669.875 , 1669.750]
       las = CWLSLas.new
       las.load_file(file_path+'/example1.las')
-      it { expect(las.curve('DEPT')).to eq(c) }
+      curve = las.curve('DEPT')
+      it { expect(las.curve('DEPT').log_data).to eq(c) }
     end
     context "get depth curve from wrap_mode file 'example3.las'" do
-      c=LasReader::Curve.new("DEPT","M","","Depth")
-      c.add(910.0, 909.875, 909.75, 909.625, 909.5)
+      c = [910.0, 909.875, 909.75, 909.625, 909.5]
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
-      it { expect(las.curve('DEPT')).to eq(c) }
+      curve = las.curve('DEPT')
+      it { expect(las.curve('DEPT').log_data).to eq(c) }
     end
   end
   
