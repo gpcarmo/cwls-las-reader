@@ -51,15 +51,28 @@ describe "CWLSLas LAS reader" do
       c = [1670.0, 1669.875 , 1669.750]
       las = CWLSLas.new
       las.load_file(file_path+'/example1.las')
-      curve = las.curve('DEPT')
       it { expect(las.curve('DEPT').log_data).to eq(c) }
     end
     context "get depth curve from wrap_mode file 'example3.las'" do
       c = [910.0, 909.875, 909.75, 909.625, 909.5]
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
-      curve = las.curve('DEPT')
       it { expect(las.curve('DEPT').log_data).to eq(c) }
+    end
+    context "get DT curve from wrap_mode with nil values from 'example3.las'" do
+      c = [nil, nil, nil, nil, nil]
+      las = CWLSLas.new
+      las.load_file(file_path+'/example3.las')
+      it { expect(las.curve('DT').log_data).to eq(c) }
+    end
+  end
+
+  describe CWLSLas, "#well_name" do
+    context "get well name from las file 'example1.las'" do
+      well_name = "ANY ET AL OIL WELL #12"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.well_name).to eq(well_name) }
     end
   end
   

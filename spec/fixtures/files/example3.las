@@ -1,3 +1,5 @@
+#EXAMPLE #3 - ILLUSTRATING THE WRAPPED VERSION
+#	      OF THE LOG ASCII STANDARD
 ~Version Information
  VERS.                1.20:   CWLS log ASCII Standard -VERSION 1.20
  WRAP.                 YES:   Multiple lines per depth step

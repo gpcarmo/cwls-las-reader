@@ -10,6 +10,7 @@ module LasReader
   attr_reader :wrap
   attr_reader :curves
   attr_reader :parameters
+  attr_reader :well_info
 
   def set_version(info)
     version = info.match(/(VERS\.).+([1-3]\.[0-9]).*:\s*(.*)/)
@@ -141,7 +142,8 @@ module LasReader
     a = temp_array + d if not d.nil?
     if a.size == self.curves.size
       self.curves.each do |k,v|
-        v.log_data << a[@acurves.index(k)].to_f
+        value = a[@acurves.index(k)].to_f
+        v.log_data << ((value == @well_info.null_value) ? nil : value)
       end
       a = []
     end
@@ -152,7 +154,8 @@ module LasReader
     d=info.scan(/[-]?[0-9]+.[0-9]+/)
     unless d.nil?
       self.curves.each do |k,v|
-        v.log_data << d[@acurves.index(k)].to_f
+        value = d[@acurves.index(k)].to_f
+        v.log_data << ((value == @well_info.null_value) ? nil : value)
       end
     end
   end
@@ -240,5 +243,8 @@ class CWLSLas
   end
   def curve(curve_name)
     self.curves[curve_name]
+  end
+  def well_name
+    self.well_info.well_name
   end
 end

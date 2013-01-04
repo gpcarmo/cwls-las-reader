@@ -1,3 +1,5 @@
+#EXAMPLE #2 - ILLUSTRATING THE MINIMUM REQUIREMENTS
+#	      OF THE LOG ASCII STANDARD IN UNWRAPPED MODE.
 ~V
 VERS.                  1.2:   CWLS log ASCII Standard -VERSION 1.2
 WRAP.                   NO:     One line per depth step
