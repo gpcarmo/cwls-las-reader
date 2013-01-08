@@ -12,7 +12,7 @@ describe "CWLS LAS reader" do
 
     context "when loading a LAS file version other then 1.2 or 2.0" do
       las = CWLSLas.new
-      it { expect { las.load_file(file_path+'LAS_30a_Revised_2010.las') }.to raise_error("LAS version not supported") } 
+      it { expect { las.load_file(file_path+'/LAS_30a_Revised_2010.las') }.to raise_error("LAS version not supported") } 
     end
   
     # LAS v1.2   
@@ -108,6 +108,111 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
       it { expect(las.well_name).to eq(well_name) }
+    end
+  end
+
+  describe CWLSLas, "#company_name" do
+    context "get company name from las v1.2 file 'example1.las'" do
+      company_name = "ANY OIL COMPANY LTD."
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.company_name).to eq(company_name) }
+    end
+    context "get company name from las v2.0 file 'example21.las'" do
+      company_name = "ANY OIL COMPANY INC."
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.company_name).to eq(company_name) }
+    end
+  end
+
+  describe CWLSLas, "#field_name" do
+    context "get company name from las v1.2 file 'example1.las'" do
+      field_name = "EDAM"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.field_name).to eq(field_name) }
+    end
+    context "get company name from las v2.0 file 'example21.las'" do
+      field_name = "WILDCAT"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.field_name).to eq(field_name) }
+    end
+  end
+
+  describe CWLSLas, "#location" do
+    context "get location from las v1.2 file 'example1.las'" do
+      location = "A9-16-49-20W3M"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.location).to eq(location) }
+    end
+    context "get location from las v2.0 file 'example21.las'" do
+      location = "12-34-12-34W5M"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.location).to eq(location) }
+    end
+  end
+
+  describe CWLSLas, "#province" do
+    context "get province from las v1.2 file 'example1.las'" do
+      province = "SASKATCHEWAN"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.province).to eq(province) }
+    end
+    context "get province from las v2.0 file 'example21.las'" do
+      province = "ALBERTA"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.province).to eq(province) }
+    end
+  end
+
+  describe CWLSLas, "#service_company" do
+    context "get service company from las v1.2 file 'example1.las'" do
+      service_company = "ANY LOGGING COMPANY LTD."
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.service_company).to eq(service_company) }
+    end
+    context "get service company from las v2.0 file 'example21.las'" do
+      service_company = "ANY LOGGING COMPANY INC."
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.service_company).to eq(service_company) }
+    end
+  end
+
+  describe CWLSLas, "#log_date" do
+    context "get log date from las v1.2 file 'example1.las'" do
+      log_date = "25-DEC-1988"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.log_date).to eq(log_date) }
+    end
+    context "get log date from las v2.0 file 'example21.las'" do
+      log_date = "13-DEC-86"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.log_date).to eq(log_date) }
+    end
+  end
+
+  describe CWLSLas, "#uwi" do
+    context "get unique well id from las v1.2 file 'example1.las'" do
+      uwi = "100091604920W300"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las.uwi).to eq(uwi) }
+    end
+    context "get unique well id from las v2.0 file 'example21.las'" do
+      uwi = "100123401234W500"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las.uwi).to eq(uwi) }
     end
   end
 

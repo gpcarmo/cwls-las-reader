@@ -21,6 +21,7 @@ module LasReader
       end
     else
       @version = version[2]
+      raise "LAS version not supported" if @version.to_f > 2.0
     end
   end
 
@@ -66,69 +67,69 @@ module LasReader
       return
     end
 
-    comp = info.match(/COMP\..+COMPANY:\s*(.*)/)
+    comp = info.match(/(COMP\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s+:COMPANY)/)
     unless comp.nil?
-      @well_info.company_name = comp[1]
+      @well_info.company_name = (comp[2] or comp[4]).strip
       return
     end
 
-    well = info.match(/WELL\..+WELL:\s*(.*)/)
+    well = info.match(/(WELL\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s+:WELL)/)
     unless well.nil?
-      @well_info.well_name = well[1]
+      @well_info.well_name = (well[2] or well[4]).strip
       return
     end
 
-    fld = info.match(/FLD \..+FIELD:\s*(.*)/)
+    fld = info.match(/(FLD \..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s+:FIELD)/)
     unless fld.nil?
-      @well_info.field_name = fld[1]
+      @well_info.field_name = (fld[2] or fld[4]).strip
       return
     end
 
-    loc = info.match(/LOC \..+LOCATION:\s*(.*)/)
+    loc = info.match(/(LOC \..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s+:LOCATION)/)
     unless loc.nil?
-      @well_info.location = loc[1]
+      @well_info.location = (loc[2] or loc[4]).strip
       return
     end
 
-    prov = info.match(/PROV\..+PROVINCE:\s*(.*)/)
+    prov = info.match(/(PROV\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s+:PROVINCE)/)
     unless prov.nil?
-      @well_info.province = prov[1]
+      @well_info.province = (prov[2] or prov[4]).strip
       return
     end
 
-    cnty = info.match(/CNTY\..+COUNTY:\s*(.*)/)
+    cnty = info.match(/(CNTY\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s+:COUNTY)/)
     unless cnty.nil?
-      @well_info.county = cnty[1]
+      @well_info.county = (cnty[2] or cnty[4]).strip
       return
     end
 
-    stat = info.match(/STAT\..+STATE:\s*(.*)/)
+    stat = info.match(/(STAT\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s+:STATE)/)
     unless stat.nil?
-      @well_info.state = stat[1]
+      @well_info.state = (stat[2] or stat[4]).strip
       return
     end
 
-    ctry  = info.match(/CTRY\..+COUNTRY:\s*(.*)/)
-    unless cnty.nil?
-      @well_info.county = cnty[1]
+    ctry  = info.match(/(CTRY\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s+:COUNTRY)/)
+    unless ctry.nil?
+      @well_info.country = (ctry[2] or ctry[4]).strip
       return
     end
 
-    srvc = info.match(/SRVC\..+SERVICE COMPANY:\s*(.*)/)
+    srvc = info.match(/(SRVC\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s+:SERVICE COMPANY)/)
     unless srvc.nil?
-      @well_info.service_company = srvc[1]
+      @well_info.service_company = (srvc[2] or srvc[4]).strip
       return
     end
 
-    data = info.match(/DATE\..+LOG DATE:\s*(.*)/)
+    data = info.match(/(DATE\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s+:LOG DATE)/)
     unless data.nil?
-      @well_info.date_logged = data[1]
+      @well_info.date_logged = (data[2] or data[4]).strip
       return
     end
 
-    uwi = info.match(/UWI\..+UNIQUE WELL ID:\s*(.*)/)
+    uwi = info.match(/(UWI \..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s+:UNIQUE WELL ID)/)
     unless uwi.nil?
-      @well_info.uwi = uwi[1]
+      @well_info.uwi = (uwi[2] or uwi[4]).strip
       return
     end
 
@@ -169,14 +170,14 @@ module LasReader
 
     read_state = 0
 
-    section_definition = {
-      'V' => "Version and wrap mode information",
-      'W' => "well identification",
-      'C' => "curve information",
-      'P' => "parameters or constants",
-      'O' => "other information such as comments",
-      'A' => "ASCII log data"
-    }
+    #section_definition = {
+    #  'V' => "Version and wrap mode information",
+    #  'W' => "well identification",
+    #  'C' => "curve information",
+    #  'P' => "parameters or constants",
+    #  'O' => "other information such as comments",
+    #  'A' => "ASCII log data"
+    #}
 
     unless File.exist?(file_name)
       raise "No such file or directory"
@@ -187,9 +188,9 @@ module LasReader
       next if line[0].chr == '#' 
       # The '~' is used to inform the beginning of a section
       if line[0].chr == '~' 
-          unless section_definition.keys.include? line[1].chr
-            puts "unsupported_file_format for #{line}"
-          end
+         # unless section_definition.keys.include? line[1].chr
+         #   raise "unsupported_file_format for #{line}"
+         # end
           case line[1].chr
             when 'V' # Version information section
               read_state = 1 
@@ -206,6 +207,7 @@ module LasReader
             when 'A' # ASCII Log data section
               read_state = 6 
           else
+            raise "unsupported file format for #{line}"
             read_state = 0 # Unknow file format
           end
       else
@@ -234,17 +236,51 @@ module LasReader
 end
 
 class CWLSLas
+
   include LasReader
+
   def initialize(filename=nil)
     load_file(filename) if not filename.nil?
   end
+
   def curve_names
     self.curves.keys
   end
+
   def curve(curve_name)
     self.curves[curve_name]
   end
+
   def well_name
     self.well_info.well_name
   end
+
+  def company_name
+    self.well_info.company_name
+  end
+
+  def field_name
+    self.well_info.field_name
+  end
+
+  def location
+    self.well_info.location
+  end
+ 
+  def province
+    self.well_info.province
+  end
+
+  def service_company
+    self.well_info.service_company
+  end
+
+  def log_date
+    self.well_info.date_logged
+  end
+
+  def uwi
+    self.well_info.uwi
+  end
+
 end
