@@ -91,7 +91,7 @@ describe "CWLS LAS reader" do
     context "get DT curve from wrap_mode with nil values from LAS v2.0 file 'example23.las'" do
       c = [nil, nil, nil, nil, nil]
       las = CWLSLas.new
-      las.load_file(file_path+'/example3.las')
+      las.load_file(file_path+'/example23.las')
       it { expect(las.curve('DT').log_data).to eq(c) }
     end
   end
