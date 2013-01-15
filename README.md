@@ -1,11 +1,10 @@
 # LasReader
 
-cwls-las-reader
 Ruby gem for reading CWLS LAS files
 
-The Canadian Well Logging Society's Floppy Disk Committee has designed a standard format for log data on floppy disks. It is known as the LAS format (Log ASCII Standard). LAS consists of files written in ASCII containing minimal header information and is intended for optical curves only.
+The Log ASCII Standard was created by the Canadian Well Logging Society in the late 1980’s. LAS was intended to supply basic digital log data to users of personal computers in a format that was quick and easy to use. LAS is an ASCII file with minimal header information, intended for optically presented log curves.  The world-wide acceptance of LAS proved the need for such a format. As users embraced the concept and the format, many new applications of the concept were attempted. Right now the latest version of the LAS format is 3.0. 
 
-Details of the LAS format are described in this paper (http://www.cwls.org/docs/LAS12_Standards.txt).
+This gem does not read LAS 3.0 format yet because its initial intent is to be used in E&P data management applications.  Version 3.0 was released in June 10, 2000 so most of the data I have access right now is either in 1.2 or 2.0 format. 
 
 ## Installation
 
@@ -21,11 +20,50 @@ Or install it yourself as:
 
     $ gem install las_reader
 
-## Quick irb Usage
+## Quick Usage
     
-    irb> require 'rubygems'
-    irb> require 'las_reader'
-    irb> my_las = CWLSLas.new('my_well.las')
+    require 'rubygems'
+    require 'las_reader'
+    my_las = CWLSLas.new('my_well.las')
+
+## Usage
+
+One of the main fucntionalities of the las_reader is to provide a way to access the curves inside the LAS file and other information regarding the well and about the logged data. Bellow an example of how to get the curve "DEEP RESISTIVITY" from the file [example1.las](https://github.com/gpcarmo/cwls-las-reader/blob/master/spec/fixtures/files/example1.las). You can find this example files inside [spec/fixtures/files](https://github.com/gpcarmo/cwls-las-reader/tree/master/spec/fixtures/files) folder.
+
+### Examples
+
+To begin the showing the basic examples, lets start a new CWLSLas object with a file name of an example las. Then we can get the well name:
+
+     my_las = CWLSLas.new('example1.las')
+     my_las.well_name
+ 
+    => "ANY ET AL OIL WELL #12"
+    
+
+To get the curve mnemonics inside the file:
+
+    my_las.curve_names
+    
+    => ["ILD", "ILM", "DT", "NPHI", "RHOB", "SFLA", "SFLU", "DEPT"] 
+
+and to get a specific curve use:
+
+    ild_curve = my_las.curve('ILD')
+
+
+From this new curve object you may want to get the description:
+
+    ild_curve.description
+
+    => "8  DEEP RESISTIVITY"
+
+Or, the values of the curve:
+
+    ild_curve.log_data
+    
+    => [105.6, 105.6, 105.6]
+
+
 
 ## Contributing
 

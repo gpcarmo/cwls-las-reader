@@ -13,9 +13,9 @@ module LasReader
   attr_reader :well_info
 
   def set_version(info)
-    version = info.match(/(VERS\.).+([1-3]\.[0-9]).*:\s*(.*)/)
+    version = info.match(/(VERS\s*\.).+([1-3]\.[0-9]).*:\s*(.*)/)
     if version.nil?
-      wrap_mode = info.match(/(WRAP\.).+(YES|NO).*:\s*(.*)/)
+      wrap_mode = info.match(/(WRAP\s*\.).+(YES|NO).*:\s*(.*)/)
       if not wrap_mode.nil?
           @wrap =  (wrap_mode[2] == "YES") ? true : false
       end
@@ -26,7 +26,7 @@ module LasReader
   end
 
   def set_curve_info(info)
-    mnemonic = info.match(/(\w+)\s*\.(\S*)\s+(.*):\s*(.*)/)
+    mnemonic = info.match(/(\w+)\s*\.(\S*)\s+(.*):\s*(.*)$/)
     unless mnemonic.nil?
       @curves["#{mnemonic[1]}"] = Curve.new(mnemonic[1],mnemonic[2],mnemonic[3],mnemonic[4])
       @acurves << mnemonic[1]
@@ -34,14 +34,13 @@ module LasReader
   end
 
   def set_parameters(info)
-    mnemonic = info.match(/(\w+)\s*\.(\S+)\s+(.*):\s*(.*)/)
+    mnemonic = info.match(/(\w+)\s*\.(\S+)\s+(.*):\s*(.*)$/)
     unless mnemonic.nil?
       @parameters["#{mnemonic[1]}"] = Mnemonic.new(mnemonic[1],mnemonic[2],mnemonic[3],mnemonic[4])
     end
   end
 
   def set_well_info(info)
-
     strt = info.match(/(STRT)\s*\.(\w).+\s([0-9]+\.[0-9]+).*:\s*(.*)/)
     unless strt.nil?
       @well_info.start_depth = strt[3].to_f
@@ -67,67 +66,67 @@ module LasReader
       return
     end
 
-    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s+:COMPANY)/)
+    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s+:\s*COMPANY)/)
     unless comp.nil?
       @well_info.company_name = (comp[2] or comp[4]).strip
       return
     end
 
-    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s+:WELL)/)
+    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s+:\s*WELL)/)
     unless well.nil?
       @well_info.well_name = (well[2] or well[4]).strip
       return
     end
 
-    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s+:FIELD)/)
+    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s+:\s*FIELD)/)
     unless fld.nil?
       @well_info.field_name = (fld[2] or fld[4]).strip
       return
     end
 
-    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s+:LOCATION)/)
+    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s+:\s*LOCATION)/)
     unless loc.nil?
       @well_info.location = (loc[2] or loc[4]).strip
       return
     end
 
-    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s+:PROVINCE)/)
+    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s+:\s*PROVINCE)/)
     unless prov.nil?
       @well_info.province = (prov[2] or prov[4]).strip
       return
     end
 
-    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s+:COUNTY)/)
+    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s+:\s*COUNTY)/)
     unless cnty.nil?
       @well_info.county = (cnty[2] or cnty[4]).strip
       return
     end
 
-    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s+:STATE)/)
+    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s+:\s*STATE)/)
     unless stat.nil?
       @well_info.state = (stat[2] or stat[4]).strip
       return
     end
 
-    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s+:COUNTRY)/)
+    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s+:\s*COUNTRY)/)
     unless ctry.nil?
       @well_info.country = (ctry[2] or ctry[4]).strip
       return
     end
 
-    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s+:SERVICE COMPANY)/)
+    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s+:\s*SERVICE COMPANY)/)
     unless srvc.nil?
       @well_info.service_company = (srvc[2] or srvc[4]).strip
       return
     end
 
-    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s+:LOG DATE)/)
+    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s+:\s*LOG DATE)/)
     unless data.nil?
       @well_info.date_logged = (data[2] or data[4]).strip
       return
     end
 
-    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s+:UNIQUE WELL ID)/)
+    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s+:\s*UNIQUE WELL ID)/)
     unless uwi.nil?
       @well_info.uwi = (uwi[2] or uwi[4]).strip
       return
@@ -227,45 +226,146 @@ class CWLSLas
 
   include LasReader
 
+  # Initialize CWLSLas object passing las file as argument
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #
+  # Arguments:
+  #   las_file_name: (String)
+
   def initialize(filename=nil)
     load_file(filename) if not filename.nil?
   end
+
+  # Return a list of mnemonics representing the curve names
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.curve_names
+  #   => ["ILD", "ILM", "DT", "NPHI", "RHOB", "SFLA", "SFLU", "DEPT"]
+  #
 
   def curve_names
     self.curves.keys
   end
 
+  # Returns an object representing the curve selected
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.curve('ILD')
+  #   => #<LasReader::Curve:0x7f @description="DEEP RESISTIVITY", @unit="OHMM", @name="ILD", @log_data=[105.6, 105.6, 105.6]>
+  #
+  # Arguments:
+  #   curve mnemonic: (String)
+
   def curve(curve_name)
     self.curves[curve_name]
   end
+
+  # Return a list of mnemonics representing the curve names
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.well_name
+  #   => "ANY ET AL OIL WELL #12"
+  #
 
   def well_name
     self.well_info.well_name
   end
 
+  # Returns the company name tha owns the well
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.company_name
+  #   => "ANY OIL COMPANY LTD."
+  #
+
   def company_name
     self.well_info.company_name
   end
+
+  # Returns the field name described in the file
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.field_name
+  #   => "CAMPOS"
+  #
 
   def field_name
     self.well_info.field_name
   end
 
+  # Returns the location described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.location
+  #   => "-43.173871636390686 -22.964858960678484"
+  #
+
   def location
     self.well_info.location
   end
  
+  # Returns the province described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.province
+  #   => "RIO DE JANEIRO"
+  #
+
   def province
     self.well_info.province
   end
+
+  # Returns the service company that performed the log acquisition 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.service_company
+  #   => "ANY LOGGING COMPANY LTD."
+  #
 
   def service_company
     self.well_info.service_company
   end
 
+  # Returns a String with the date described in the file.
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.log_date
+  #   => "25-DEC-1988"
+  #
+
   def log_date
     self.well_info.date_logged
   end
+
+  # Returns the UWI (UNIQUE WELL ID) described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.uwi
+  #   => "100091604920W300"
+  #
 
   def uwi
     self.well_info.uwi
