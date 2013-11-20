@@ -65,6 +65,8 @@ Or, the values of the curve:
     
     => [105.6, 105.6, 105.6]
 
+## License
+MIT License - Copyright (c) 2013 Gilberto P. Carmo Jr.
 
 
 ## Contributing
