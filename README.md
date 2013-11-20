@@ -2,6 +2,8 @@
 
 Ruby gem for reading CWLS LAS files
 
+[<img src="https://badge.fury.io/rb/las_reader.png" alt="Gem Version" />](http://badge.fury.io/rb/las_reader)
+
 The Log ASCII Standard was created by the Canadian Well Logging Society in the late 1980’s. LAS was intended to supply basic digital log data to users of personal computers in a format that was quick and easy to use. LAS is an ASCII file with minimal header information, intended for optically presented log curves.  The world-wide acceptance of LAS proved the need for such a format. As users embraced the concept and the format, many new applications of the concept were attempted. Right now the latest version of the LAS format is 3.0. 
 
 This gem does not read LAS 3.0 format yet because its initial intent is to be used in E&P data management applications.  Version 3.0 was released in June 10, 2000 so most of the data I have access right now is either in 1.2 or 2.0 format. 
