@@ -1,4 +1,4 @@
-# LasReader
+# LAS Reader
 
 Ruby gem for reading CWLS LAS files
 
