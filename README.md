@@ -1,6 +1,6 @@
 # LAS Reader
 
-Ruby gem for reading CWLS LAS files
+Ruby gem for reading Log ASCII Standard files (CWLS LAS files)
 
 [<img src="https://badge.fury.io/rb/las_reader.png" alt="Gem Version" />](http://badge.fury.io/rb/las_reader)
 
