@@ -47,6 +47,11 @@ describe "CWLS LAS reader" do
         las = CWLSLas.new
         las.load_file(file_path+'/example23.las')
         it { expect(las).to be_truthy }
+    end    
+    context "when loading LAS v2.0 file: 'example24_check.las'" do
+        las = CWLSLas.new
+        las.load_file(file_path+'/example24_check.las')
+        it { expect(las).to be_truthy }
     end
   
   end
