@@ -119,6 +119,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.well_name).to eq(well_name) }
     end
+    context "get well name from las v2.0 file 'example24_check.las'" do
+      well_name = "NORTH FORELAND ST #1"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.well_name).to eq(well_name) }
+    end
   end
 
   describe CWLSLas, "#company_name" do

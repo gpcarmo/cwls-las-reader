@@ -72,7 +72,7 @@ module LasReader
       return
     end
 
-    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s+:\s*WELL)/)
+    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s*:\s*WELL)/)
     unless well.nil?
       @well_info.well_name = (well[2] or well[4]).strip
       return
