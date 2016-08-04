@@ -19,7 +19,7 @@ describe "CWLS LAS reader" do
     context "when loading LAS v1.2 file: 'example1.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example1.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     context "when loading LAS v1.2 file: 'example2.las'" do
         las = CWLSLas.new
