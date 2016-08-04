@@ -78,7 +78,7 @@ module LasReader
       return
     end
 
-    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s+:\s*FIELD)/)
+    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s*:\s*FIELD)/)
     unless fld.nil?
       @well_info.field_name = (fld[2] or fld[4]).strip
       return
