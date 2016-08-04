@@ -182,6 +182,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.location).to eq(location) }
     end
+    context "get location from las v2.0 file 'example24_check.las'" do
+      location = "11N  10W   13 2242FNL 1240FWL"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.location).to eq(location) }
+    end
   end
 
   describe CWLSLas, "#province" do
@@ -195,6 +201,12 @@ describe "CWLS LAS reader" do
       province = "ALBERTA"
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
+      it { expect(las.province).to eq(province) }
+    end
+    context "get province from las v2.0 file 'example24_check.las'" do
+      province = "ALBERTA"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
       it { expect(las.province).to eq(province) }
     end
   end

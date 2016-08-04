@@ -84,7 +84,7 @@ module LasReader
       return
     end
 
-    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s+:\s*LOCATION)/)
+    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s*:\s*LOCATION)/)
     unless loc.nil?
       @well_info.location = (loc[2] or loc[4]).strip
       return
@@ -369,6 +369,19 @@ class CWLSLas
 
   def uwi
     self.well_info.uwi
+  end
+
+  # Returns the state described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.state
+  #   => "KANSAS"
+  #
+
+  def state
+    self.well_info.state
   end
 
 end
