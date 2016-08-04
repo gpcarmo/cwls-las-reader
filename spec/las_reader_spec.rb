@@ -71,6 +71,11 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
       it { expect(las.curve_names.size).to eq(36) }
+    end    
+    context "number of curves in file example24_check.las" do
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.curve_names.size).to eq(18) }
     end
   end
 
