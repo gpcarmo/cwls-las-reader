@@ -271,5 +271,14 @@ describe "CWLS LAS reader" do
     end
   end
 
+  describe CWLSLas, "#country" do
+    context "get country from las v2.0 file 'example24_check.las'" do
+      country = "US"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.country).to eq(country) }
+    end
+  end
+
 
 end
