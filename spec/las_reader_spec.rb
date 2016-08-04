@@ -190,7 +190,7 @@ describe "CWLS LAS reader" do
     end
   end
 
-  describe CWLSLas, "#province" do
+  describe CWLSLas, "#province/state" do
     context "get province from las v1.2 file 'example1.las'" do
       province = "SASKATCHEWAN"
       las = CWLSLas.new
@@ -254,6 +254,22 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.uwi).to eq(uwi) }
     end
+    context "get unique well id (api for this file) from las v2.0 file 'example24_check.las'" do
+      uwi = "50883200850000"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.uwi).to eq(uwi) }
+    end
   end
+
+  describe CWLSLas, "#county" do
+    context "get county from las v2.0 file 'example24_check.las'" do
+      county = "KENAI"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.county).to eq(county) }
+    end
+  end
+
 
 end

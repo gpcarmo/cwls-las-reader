@@ -17,7 +17,7 @@ module LasReader
     if version.nil?
       wrap_mode = info.match(/(WRAP\s*\.).+(YES|NO).*:\s*(.*)/)
       if not wrap_mode.nil?
-          @wrap =  (wrap_mode[2] == "YES") ? true : false
+        @wrap =  (wrap_mode[2] == "YES") ? true : false
       end
     else
       @version = version[2]
@@ -184,7 +184,7 @@ module LasReader
       next if line[0].chr == '#' 
       # The '~' is used to inform the beginning of a section
       if line[0].chr == '~' 
-          case line[1].chr
+        case line[1].chr
             when 'V' # Version information section
               read_state = 1 
             when 'W' # Well identification section
@@ -199,12 +199,12 @@ module LasReader
               read_state = 5 
             when 'A' # ASCII Log data section
               read_state = 6 
-          else
-            raise "unsupported file format for #{line}"
+            else
+              raise "unsupported file format for #{line}"
             read_state = 0 # Unknow file format
           end
-      else
-        case read_state
+        else
+          case read_state
           when 1
             set_version(line.lstrip)
           when 2
@@ -221,16 +221,16 @@ module LasReader
             else
               log_nowrap_data(line)
             end 
+          end
         end
       end
     end
+
   end
 
-end
+  class CWLSLas
 
-class CWLSLas
-
-  include LasReader
+    include LasReader
 
   # Initialize CWLSLas object passing las file as argument
   # 
@@ -324,7 +324,7 @@ class CWLSLas
   def location
     self.well_info.location
   end
- 
+
   # Returns the province described in the file 
   # 
   # Example:
@@ -390,6 +390,32 @@ class CWLSLas
 
   def state
     self.well_info.state
+  end
+
+  # Returns the county described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.county
+  #   => "KENAI"
+  #
+
+  def county
+    self.well_info.county
+  end
+
+  # Returns the country described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.country
+  #   => "US"
+  #
+
+  def country
+    self.well_info.country
   end
 
 end
