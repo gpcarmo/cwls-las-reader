@@ -90,13 +90,13 @@ module LasReader
       return
     end
 
-    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s+:\s*PROVINCE)/)
+    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s*:\s*PROVINCE)/)
     unless prov.nil?
       @well_info.province = (prov[2] or prov[4]).strip
       return
     end
 
-    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s+:\s*COUNTY)/)
+    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s*:\s*COUNTY)/)
     unless cnty.nil?
       @well_info.county = (cnty[2] or cnty[4]).strip
       return
@@ -108,25 +108,25 @@ module LasReader
       return
     end
 
-    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s+:\s*COUNTRY)/)
+    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s*:\s*COUNTRY)/)
     unless ctry.nil?
       @well_info.country = (ctry[2] or ctry[4]).strip
       return
     end
 
-    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s+:\s*SERVICE COMPANY)/)
+    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s*:\s*SERVICE COMPANY)/)
     unless srvc.nil?
       @well_info.service_company = (srvc[2] or srvc[4]).strip
       return
     end
 
-    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s+:\s*LOG DATE)/)
+    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s*:\s*LOG DATE)/)
     unless data.nil?
       @well_info.date_logged = (data[2] or data[4]).strip
       return
     end
 
-    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s+:\s*UNIQUE WELL ID)/)
+    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID)/)
     unless uwi.nil?
       @well_info.uwi = (uwi[2] or uwi[4]).strip
       return
