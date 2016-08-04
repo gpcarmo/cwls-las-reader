@@ -139,6 +139,12 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
       it { expect(las.company_name).to eq(company_name) }
+    end    
+    context "get company name from las v2.0 file 'example24_check.las'" do
+      company_name = "ARCO ALASKA INC"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.company_name).to eq(company_name) }
     end
   end
 

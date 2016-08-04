@@ -66,7 +66,7 @@ module LasReader
       return
     end
 
-    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s+:\s*COMPANY)/)
+    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s*:\s*COMPANY)/)
     unless comp.nil?
       @well_info.company_name = (comp[2] or comp[4]).strip
       return
