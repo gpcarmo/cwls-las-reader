@@ -132,6 +132,12 @@ module LasReader
       return
     end
 
+    api = info.match(/(API\s*\..+UNIQUE WELL ID\s*:\s*(.*))|(API\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID\s*)/)
+    unless api.nil?
+      @well_info.api = (api[2] or api[4]).strip
+      return
+    end
+
   end
 
   def set_other_info(info)
@@ -358,8 +364,10 @@ class CWLSLas
     self.well_info.date_logged
   end
 
-  # Returns the UWI (UNIQUE WELL ID) described in the file 
+  # Returns the UWI (UNIQUE WELL ID) described in the file  
   # 
+  # Returns API if UWI not found (for locations outside Canada)
+  #
   # Example:
   #   >> my_well = CWLSLas.new('my_well.las')
   #   => #<CWLSLas>
@@ -368,7 +376,7 @@ class CWLSLas
   #
 
   def uwi
-    self.well_info.uwi
+    self.well_info.uwi || self.well_info.api
   end
 
   # Returns the state described in the file 
