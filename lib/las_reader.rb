@@ -102,7 +102,7 @@ module LasReader
       return
     end
 
-    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s+:\s*STATE)/)
+    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s*:\s*STATE)/)
     unless stat.nil?
       @well_info.state = (stat[2] or stat[4]).strip
       return

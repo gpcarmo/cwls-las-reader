@@ -203,11 +203,11 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.province).to eq(province) }
     end
-    context "get province from las v2.0 file 'example24_check.las'" do
-      province = "ALBERTA"
+    context "get state(American file) from las v2.0 file 'example24_check.las'" do
+      state = "Alaska"
       las = CWLSLas.new
       las.load_file(file_path+'/example24_check.las')
-      it { expect(las.province).to eq(province) }
+      it { expect(las.state).to eq(state) }
     end
   end
 
