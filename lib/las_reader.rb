@@ -413,9 +413,24 @@ module LasReader
   #   >> my_well.country
   #   => "US"
   #
-
+  
   def country
     self.well_info.country
   end
 
+  def step
+    self.well_info.step
+  end
+
+  def start_depth
+    self.well_info.start_depth
+  end
+
+  def stop_depth
+    self.well_info.stop_depth
+  end
+
+  def depth_unit
+    self.well_info.depth_unit
+  end
 end
