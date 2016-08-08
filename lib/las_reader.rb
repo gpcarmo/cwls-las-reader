@@ -149,7 +149,7 @@ module LasReader
     if a.size == self.curves.size
       self.curves.each do |k,v|
         value = a[@acurves.index(k)].to_f
-        v.log_data << ((value == @well_info.null_value) ? nil : value)
+        v.log_data << ((value == @well_info.null_value) ? "" : value)
       end
       a = []
     end
@@ -161,7 +161,7 @@ module LasReader
     unless d.nil?
       self.curves.each do |k,v|
         value = d[@acurves.index(k)].to_f
-        v.log_data << ((value == @well_info.null_value) ? nil : value)
+        v.log_data << ((value == @well_info.null_value) ? "" : value)
       end
     end
   end
