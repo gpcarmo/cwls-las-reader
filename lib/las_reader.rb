@@ -430,15 +430,40 @@ module LasReader
     self.well_info.step
   end
 
+  # Returns the start_depth in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.start_depth
+  #   => 316.00
+  #
   def start_depth
     self.well_info.start_depth
   end
 
+  # Returns the stop_depth in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.stop_depth
+  #   => 17771.00
+  #
   def stop_depth
     self.well_info.stop_depth
   end
 
+  # Returns the depth units in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.depth_unit
+  #   => "F"
+  #
   def depth_unit
     self.well_info.depth_unit
   end
+  
 end
