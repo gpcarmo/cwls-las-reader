@@ -418,6 +418,14 @@ module LasReader
     self.well_info.country
   end
 
+  # Returns the depth step size in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.step
+  #   => 0.5
+  #
   def step
     self.well_info.step
   end

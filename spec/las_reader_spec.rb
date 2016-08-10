@@ -280,5 +280,40 @@ describe "CWLS LAS reader" do
     end
   end
 
+  describe CWLSLas, "#step" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      step_size = 0.5
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.step).to eq(country) }
+    end
+  end
 
+  describe CWLSLas, "#start_depth" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      step_size = 0.5
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.step).to eq(country) }
+    end
+  end
+
+  describe CWLSLas, "#stop_depth" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      step_size = 0.5
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.step).to eq(country) }
+    end
+  end
+
+  describe CWLSLas, "#depth_unit" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      step_size = 0.5
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.step).to eq(country) }
+    end
+  end
+  
 end
