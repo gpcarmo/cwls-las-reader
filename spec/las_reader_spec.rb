@@ -93,13 +93,13 @@ describe "CWLS LAS reader" do
       it { expect(las.curve('DEPT').log_data).to eq(c) }
     end
     context "get DT curve from wrap_mode with nil values from LAS v1.2 file 'example3.las'" do
-      c = [nil, nil, nil, nil, nil]
+      c = ["", "", "", "", ""]
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
       it { expect(las.curve('DT').log_data).to eq(c) }
     end
     context "get DT curve from wrap_mode with nil values from LAS v2.0 file 'example23.las'" do
-      c = [nil, nil, nil, nil, nil]
+      c = ["", "", "", "", ""]
       las = CWLSLas.new
       las.load_file(file_path+'/example23.las')
       it { expect(las.curve('DT').log_data).to eq(c) }
