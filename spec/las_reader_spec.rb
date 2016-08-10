@@ -1,5 +1,5 @@
 require 'spec_helper'
-  
+
 describe "CWLS LAS reader" do
 
   file_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
@@ -14,58 +14,68 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       it { expect { las.load_file(file_path+'/LAS_30a_Revised_2010.las') }.to raise_error("LAS version not supported") } 
     end
-  
+
     # LAS v1.2   
     context "when loading LAS v1.2 file: 'example1.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example1.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example1.las')
+      it { expect(las).to be_truthy }
     end
     context "when loading LAS v1.2 file: 'example2.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example2.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example2.las')
+      it { expect(las).to be_truthy }
     end
     context "when loading LAS v1.2 file: 'example3.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example3.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example3.las')
+      it { expect(las).to be_truthy }
     end
     
     # LAS v2.0   
     context "when loading LAS v2.0 file: 'example21.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example21.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example21.las')
+      it { expect(las).to be_truthy }
     end
     context "when loading LAS v2.0 file: 'example22.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example22.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example22.las')
+      it { expect(las).to be_truthy }
     end
     context "when loading LAS v2.0 file: 'example23.las'" do
-        las = CWLSLas.new
-        las.load_file(file_path+'/example23.las')
-        it { las.should be_true }
+      las = CWLSLas.new
+      las.load_file(file_path+'/example23.las')
+      it { expect(las).to be_truthy }
     end
-  
+    context "when loading LAS v2.0 file: 'example24_check.las'" do
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las).to be_truthy }
+    end
+
   end
   
   describe CWLSLas, "#curve_names" do
     context "number of curves in file example1.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example1.las')
-      it { las.curve_names.size.should == 8 }
+      it { expect(las.curve_names.size).to eq(8) }
     end
     context "number of curves in file example2.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example2.las')
-      it { las.curve_names.size.should == 8 }
+      it { expect(las.curve_names.size).to eq(8) }
     end
     context "number of curves in file example3.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
-      it { las.curve_names.size.should == 36 }
+      it { expect(las.curve_names.size).to eq(36) }
+    end    
+    context "number of curves in file example24_check.las" do
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.curve_names.size).to eq(18) }
     end
   end
 
@@ -83,13 +93,13 @@ describe "CWLS LAS reader" do
       it { expect(las.curve('DEPT').log_data).to eq(c) }
     end
     context "get DT curve from wrap_mode with nil values from LAS v1.2 file 'example3.las'" do
-      c = [nil, nil, nil, nil, nil]
+      c = ["", "", "", "", ""]
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
       it { expect(las.curve('DT').log_data).to eq(c) }
     end
     context "get DT curve from wrap_mode with nil values from LAS v2.0 file 'example23.las'" do
-      c = [nil, nil, nil, nil, nil]
+      c = ["", "", "", "", ""]
       las = CWLSLas.new
       las.load_file(file_path+'/example23.las')
       it { expect(las.curve('DT').log_data).to eq(c) }
@@ -109,6 +119,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.well_name).to eq(well_name) }
     end
+    context "get well name from las v2.0 file 'example24_check.las'" do
+      well_name = "NORTH FORELAND ST #1"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.well_name).to eq(well_name) }
+    end
   end
 
   describe CWLSLas, "#company_name" do
@@ -124,6 +140,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.company_name).to eq(company_name) }
     end
+    context "get company name from las v2.0 file 'example24_check.las'" do
+      company_name = "ARCO ALASKA INC"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.company_name).to eq(company_name) }
+    end
   end
 
   describe CWLSLas, "#field_name" do
@@ -137,6 +159,12 @@ describe "CWLS LAS reader" do
       field_name = "WILDCAT"
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
+      it { expect(las.field_name).to eq(field_name) }
+    end    
+    context "get company name from las v2.0 file 'example24_check.las'" do
+      field_name = "Mid Grd Shoal/Trdng Bay"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
       it { expect(las.field_name).to eq(field_name) }
     end
   end
@@ -154,9 +182,15 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.location).to eq(location) }
     end
+    context "get location from las v2.0 file 'example24_check.las'" do
+      location = "11N  10W   13 2242FNL 1240FWL"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.location).to eq(location) }
+    end
   end
 
-  describe CWLSLas, "#province" do
+  describe CWLSLas, "#province/state" do
     context "get province from las v1.2 file 'example1.las'" do
       province = "SASKATCHEWAN"
       las = CWLSLas.new
@@ -168,6 +202,12 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
       it { expect(las.province).to eq(province) }
+    end
+    context "get state(American file) from las v2.0 file 'example24_check.las'" do
+      state = "Alaska"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.state).to eq(state) }
     end
   end
 
@@ -213,6 +253,66 @@ describe "CWLS LAS reader" do
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
       it { expect(las.uwi).to eq(uwi) }
+    end
+    context "get unique well id (api for this file) from las v2.0 file 'example24_check.las'" do
+      uwi = "50883200850000"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.uwi).to eq(uwi) }
+    end
+  end
+
+  describe CWLSLas, "#county" do
+    context "get county from las v2.0 file 'example24_check.las'" do
+      county = "KENAI"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.county).to eq(county) }
+    end
+  end
+
+  describe CWLSLas, "#country" do
+    context "get country from las v2.0 file 'example24_check.las'" do
+      country = "US"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.country).to eq(country) }
+    end
+  end
+
+  describe CWLSLas, "#step" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      step_size = 0.5
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.step).to eq(step_size) }
+    end
+  end
+
+  describe CWLSLas, "#start_depth" do
+    context "get start_depth from las v2.0 file 'example24_check.las'" do
+      start_depth = 316.00
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.start_depth).to eq(start_depth) }
+    end
+  end
+
+  describe CWLSLas, "#stop_depth" do
+    context "get stop_depth from las v2.0 file 'example24_check.las'" do
+      stop_depth = 17750.00
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.stop_depth).to eq(stop_depth) }
+    end
+  end
+
+  describe CWLSLas, "#depth_unit" do
+    context "get depth step size from las v2.0 file 'example24_check.las'" do
+      depth_unit = "F"
+      las = CWLSLas.new
+      las.load_file(file_path+'/example24_check.las')
+      it { expect(las.depth_unit).to eq(depth_unit) }
     end
   end
 

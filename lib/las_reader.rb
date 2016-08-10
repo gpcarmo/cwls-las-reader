@@ -17,7 +17,7 @@ module LasReader
     if version.nil?
       wrap_mode = info.match(/(WRAP\s*\.).+(YES|NO).*:\s*(.*)/)
       if not wrap_mode.nil?
-          @wrap =  (wrap_mode[2] == "YES") ? true : false
+        @wrap =  (wrap_mode[2] == "YES") ? true : false
       end
     else
       @version = version[2]
@@ -66,69 +66,75 @@ module LasReader
       return
     end
 
-    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s+:\s*COMPANY)/)
+    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s*:\s*COMPANY)/)
     unless comp.nil?
       @well_info.company_name = (comp[2] or comp[4]).strip
       return
     end
 
-    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s+:\s*WELL)/)
+    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s*:\s*WELL)/)
     unless well.nil?
       @well_info.well_name = (well[2] or well[4]).strip
       return
     end
 
-    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s+:\s*FIELD)/)
+    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s*:\s*FIELD)/)
     unless fld.nil?
       @well_info.field_name = (fld[2] or fld[4]).strip
       return
     end
 
-    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s+:\s*LOCATION)/)
+    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s*:\s*LOCATION)/)
     unless loc.nil?
       @well_info.location = (loc[2] or loc[4]).strip
       return
     end
 
-    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s+:\s*PROVINCE)/)
+    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s*:\s*PROVINCE)/)
     unless prov.nil?
       @well_info.province = (prov[2] or prov[4]).strip
       return
     end
 
-    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s+:\s*COUNTY)/)
+    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s*:\s*COUNTY)/)
     unless cnty.nil?
       @well_info.county = (cnty[2] or cnty[4]).strip
       return
     end
 
-    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s+:\s*STATE)/)
+    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s*:\s*STATE)/)
     unless stat.nil?
       @well_info.state = (stat[2] or stat[4]).strip
       return
     end
 
-    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s+:\s*COUNTRY)/)
+    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s*:\s*COUNTRY)/)
     unless ctry.nil?
       @well_info.country = (ctry[2] or ctry[4]).strip
       return
     end
 
-    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s+:\s*SERVICE COMPANY)/)
+    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s*:\s*SERVICE COMPANY)/)
     unless srvc.nil?
       @well_info.service_company = (srvc[2] or srvc[4]).strip
       return
     end
 
-    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s+:\s*LOG DATE)/)
+    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s*:\s*LOG DATE)/)
     unless data.nil?
       @well_info.date_logged = (data[2] or data[4]).strip
       return
     end
 
-    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s+:\s*UNIQUE WELL ID)/)
+    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID)/)
     unless uwi.nil?
       @well_info.uwi = (uwi[2] or uwi[4]).strip
+      return
+    end
+
+    api = info.match(/(API\s*\..+UNIQUE WELL ID\s*:\s*(.*))|(API\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID\s*)/)
+    unless api.nil?
+      @well_info.api = (api[2] or api[4]).strip
       return
     end
 
@@ -143,7 +149,7 @@ module LasReader
     if a.size == self.curves.size
       self.curves.each do |k,v|
         value = a[@acurves.index(k)].to_f
-        v.log_data << ((value == @well_info.null_value) ? nil : value)
+        v.log_data << ((value == @well_info.null_value) ? "" : value)
       end
       a = []
     end
@@ -155,7 +161,7 @@ module LasReader
     unless d.nil?
       self.curves.each do |k,v|
         value = d[@acurves.index(k)].to_f
-        v.log_data << ((value == @well_info.null_value) ? nil : value)
+        v.log_data << ((value == @well_info.null_value) ? "" : value)
       end
     end
   end
@@ -178,7 +184,7 @@ module LasReader
       next if line[0].chr == '#' 
       # The '~' is used to inform the beginning of a section
       if line[0].chr == '~' 
-          case line[1].chr
+        case line[1].chr
             when 'V' # Version information section
               read_state = 1 
             when 'W' # Well identification section
@@ -193,12 +199,12 @@ module LasReader
               read_state = 5 
             when 'A' # ASCII Log data section
               read_state = 6 
-          else
-            raise "unsupported file format for #{line}"
+            else
+              raise "unsupported file format for #{line}"
             read_state = 0 # Unknow file format
           end
-      else
-        case read_state
+        else
+          case read_state
           when 1
             set_version(line.lstrip)
           when 2
@@ -215,16 +221,16 @@ module LasReader
             else
               log_nowrap_data(line)
             end 
+          end
         end
       end
     end
+
   end
 
-end
+  class CWLSLas
 
-class CWLSLas
-
-  include LasReader
+    include LasReader
 
   # Initialize CWLSLas object passing las file as argument
   # 
@@ -318,7 +324,7 @@ class CWLSLas
   def location
     self.well_info.location
   end
- 
+
   # Returns the province described in the file 
   # 
   # Example:
@@ -358,8 +364,10 @@ class CWLSLas
     self.well_info.date_logged
   end
 
-  # Returns the UWI (UNIQUE WELL ID) described in the file 
+  # Returns the UWI (UNIQUE WELL ID) described in the file  
   # 
+  # Returns API if UWI not found (for locations outside Canada)
+  #
   # Example:
   #   >> my_well = CWLSLas.new('my_well.las')
   #   => #<CWLSLas>
@@ -368,7 +376,94 @@ class CWLSLas
   #
 
   def uwi
-    self.well_info.uwi
+    self.well_info.uwi || self.well_info.api
   end
 
+  # Returns the state described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.state
+  #   => "KANSAS"
+  #
+
+  def state
+    self.well_info.state
+  end
+
+  # Returns the county described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.county
+  #   => "KENAI"
+  #
+
+  def county
+    self.well_info.county
+  end
+
+  # Returns the country described in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.country
+  #   => "US"
+  #
+  
+  def country
+    self.well_info.country
+  end
+
+  # Returns the depth step size in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.step
+  #   => 0.5
+  #
+  def step
+    self.well_info.step
+  end
+
+  # Returns the start_depth in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.start_depth
+  #   => 316.00
+  #
+  def start_depth
+    self.well_info.start_depth
+  end
+
+  # Returns the stop_depth in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.stop_depth
+  #   => 17771.00
+  #
+  def stop_depth
+    self.well_info.stop_depth
+  end
+
+  # Returns the depth units in the file 
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.depth_unit
+  #   => "F"
+  #
+  def depth_unit
+    self.well_info.depth_unit
+  end
+  
 end
