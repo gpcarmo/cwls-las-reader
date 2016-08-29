@@ -19,34 +19,34 @@ describe "CWLS LAS reader" do
     context "when loading LAS v1.2 file: 'example1.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example1.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     context "when loading LAS v1.2 file: 'example2.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example2.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     context "when loading LAS v1.2 file: 'example3.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example3.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     
     # LAS v2.0   
     context "when loading LAS v2.0 file: 'example21.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example21.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     context "when loading LAS v2.0 file: 'example22.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example22.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
     context "when loading LAS v2.0 file: 'example23.las'" do
         las = CWLSLas.new
         las.load_file(file_path+'/example23.las')
-        it { las.should be_true }
+        it { expect(las).to be_truthy }
     end
   
   end
@@ -55,17 +55,17 @@ describe "CWLS LAS reader" do
     context "number of curves in file example1.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example1.las')
-      it { las.curve_names.size.should == 8 }
+      it { expect(las.curve_names.size).to eq(8) }
     end
     context "number of curves in file example2.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example2.las')
-      it { las.curve_names.size.should == 8 }
+      it { expect(las.curve_names.size).to eq(8) }
     end
     context "number of curves in file example3.las" do
       las = CWLSLas.new
       las.load_file(file_path+'/example3.las')
-      it { las.curve_names.size.should == 36 }
+      it { expect(las.curve_names.size).to eq(36) }
     end
   end
 
