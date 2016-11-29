@@ -11,6 +11,7 @@ module LasReader
   attr_reader :curves
   attr_reader :parameters
   attr_reader :well_info
+  attr_reader :file_encode
 
   def set_version(info)
     version = info.match(/(VERS\s*\.).+([1-3]\.[0-9]).*:\s*(.*)/)
@@ -41,6 +42,8 @@ module LasReader
   end
 
   def set_well_info(info)
+
+   
     strt = info.match(/(STRT)\s*\.(\w).+\s([0-9]+\.[0-9]+).*:\s*(.*)/)
     unless strt.nil?
       @well_info.start_depth = strt[3].to_f
@@ -72,7 +75,7 @@ module LasReader
       return
     end
 
-    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s*:\s*WELL)/)
+    well = info.match(/(WELL\s*\..+WELL:\s*(.*))|(WELL\s*\.\s*(.*)\s*:\s*.*)/)
     unless well.nil?
       @well_info.well_name = (well[2] or well[4]).strip
       return
@@ -166,7 +169,16 @@ module LasReader
     end
   end
 
-  def load_file(file_name)
+  def get_file_encoding(encoding)
+    return Encoding.default_external if encoding.nil?
+    if Encoding.name_list.include?(encoding)
+      return Encoding.find(encoding)
+    else
+      raise "Encoding not supported" 
+    end
+  end
+
+  def load_file(file_name, file_options = {})
 
     temp_array = []
     @curves = {}
@@ -175,11 +187,17 @@ module LasReader
 
     read_state = 0
 
+    @file_encoding = get_file_encoding(file_options[:encoding]) 
+
     unless File.exist?(file_name)
       raise "No such file or directory"
     end
 
-    File.open(file_name).each do |line|
+    File.open(file_name, encoding: @file_encoding).each do |uline|
+
+      # characters not supported in the default encoding are replaced by space - This is suggested by the CWLS LAS documentation.
+      line = uline.encode(Encoding.default_external, @file_encoding, invalid: :replace, undef: :replace, replace: ' ')
+
       # ignore comments
       next if line[0].chr == '#' 
       # The '~' is used to inform the beginning of a section

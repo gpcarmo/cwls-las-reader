@@ -5,14 +5,35 @@ describe "CWLS LAS reader" do
   file_path = File.expand_path(File.dirname(__FILE__) + '/fixtures/files/')
   
   describe CWLSLas, "#load_file" do
+
+    before(:each) do 
+      @las = CWLSLas.new
+    end
+ 
     context "when loading a file that does not exist" do
-      las = CWLSLas.new
-      it { expect { las.load_file('whatever.las') }.to raise_error("No such file or directory") } 
+      it { expect { @las.load_file('whatever.las') }.to raise_error("No such file or directory") } 
     end
 
     context "when loading a LAS file version other then 1.2 or 2.0" do
+      it { expect { @las.load_file(file_path+'/LAS_30a_Revised_2010.las') }.to raise_error("LAS version not supported") } 
+    end
+
+    context "when loading a LAS file with an specific valid file encoding" do
       las = CWLSLas.new
-      it { expect { las.load_file(file_path+'/LAS_30a_Revised_2010.las') }.to raise_error("LAS version not supported") } 
+      las.load_file(file_path+'/example1.las', encoding: "US-ASCII" )
+      it { expect(las).to be_truthy }
+    end
+
+    context "when loading a LAS file with an invalid file encoding" do
+      it { expect { @las.load_file(file_path+'/example1.las', encoding: "ImaginaryEncoding") }.to raise_error("Encoding not supported") } 
+    end
+
+    context "when seting encoding with unsupported encoding" do
+      it { expect { @las.get_file_encoding("ImaginaryEncoding")}.to raise_error("Encoding not supported") }
+    end
+
+    context "when setting encoding with supported encoding" do
+      it { expect(@las.get_file_encoding("US-ASCII")).to be_truthy }
     end
 
     # LAS v1.2   
@@ -55,7 +76,7 @@ describe "CWLS LAS reader" do
     end
 
   end
-  
+
   describe CWLSLas, "#curve_names" do
     context "number of curves in file example1.las" do
       las = CWLSLas.new
@@ -123,6 +144,20 @@ describe "CWLS LAS reader" do
       well_name = "NORTH FORELAND ST #1"
       las = CWLSLas.new
       las.load_file(file_path+'/example24_check.las')
+      it { expect(las.well_name).to eq(well_name) }
+    end
+  end
+  describe CWLSLas, "Different Encoding Handling" do
+    context "when loading file encoded in ISO-8859-15 but not specifying encoding" do
+      well_name = "Sh mar a 1" 
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1-iso-8859-15.las')
+      it { expect(las.well_name).to eq(well_name) }
+    end
+    context "when loading file encoded in ISO-8859-15 but specifying encoding" do
+      well_name = "Shámarça 1"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1-iso-8859-15.las', encoding: "ISO-8859-1")
       it { expect(las.well_name).to eq(well_name) }
     end
   end
@@ -279,6 +314,5 @@ describe "CWLS LAS reader" do
       it { expect(las.country).to eq(country) }
     end
   end
-
 
 end
