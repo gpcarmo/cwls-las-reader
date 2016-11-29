@@ -42,7 +42,6 @@ module LasReader
   end
 
   def set_well_info(info)
-
    
     strt = info.match(/(STRT)\s*\.(\w).+\s([0-9]+\.[0-9]+).*:\s*(.*)/)
     unless strt.nil?
@@ -258,9 +257,11 @@ module LasReader
   #
   # Arguments:
   #   las_file_name: (String)
+  #   file_options: (Hash)
+  #     options: encoding 
 
-  def initialize(filename=nil)
-    load_file(filename) if not filename.nil?
+  def initialize(filename=nil, file_options={})
+    load_file(filename, file_options) if not filename.nil?
   end
 
   # Return a list of mnemonics representing the curve names
