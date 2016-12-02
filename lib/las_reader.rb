@@ -68,7 +68,7 @@ module LasReader
       return
     end
 
-    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s*:\s*COMPANY)/)
+    comp = info.match(/(COMP\s*\..+COMPANY:\s*(.*))|(COMP\s*\.\s*(.*)\s*:\s*.*)/)
     unless comp.nil?
       @well_info.company_name = (comp[2] or comp[4]).strip
       return
@@ -80,61 +80,61 @@ module LasReader
       return
     end
 
-    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s*:\s*FIELD)/)
+    fld = info.match(/(FLD\s*\..+FIELD:\s*(.*))|(FLD\s*\.\s*(.*)\s*:\s*.*)/)
     unless fld.nil?
       @well_info.field_name = (fld[2] or fld[4]).strip
       return
     end
 
-    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s*:\s*LOCATION)/)
+    loc = info.match(/(LOC\s*\..+LOCATION:\s*(.*))|(LOC\s*\.\s*(.*)\s*:\s*.*)/)
     unless loc.nil?
       @well_info.location = (loc[2] or loc[4]).strip
       return
     end
 
-    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s*:\s*PROVINCE)/)
+    prov = info.match(/(PROV\s*\..+PROVINCE:\s*(.*))|(PROV\s*\.\s*(.*)\s*:\s*.*)/)
     unless prov.nil?
       @well_info.province = (prov[2] or prov[4]).strip
       return
     end
 
-    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s*:\s*COUNTY)/)
+    cnty = info.match(/(CNTY\s*\..+COUNTY:\s*(.*))|(CNTY\s*\.\s*(.*)\s*:\s*.*)/)
     unless cnty.nil?
       @well_info.county = (cnty[2] or cnty[4]).strip
       return
     end
 
-    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s*:\s*STATE)/)
+    stat = info.match(/(STAT\s*\..+STATE:\s*(.*))|(STAT\s*\.\s*(.*)\s*:\s*.*)/)
     unless stat.nil?
       @well_info.state = (stat[2] or stat[4]).strip
       return
     end
 
-    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s*:\s*COUNTRY)/)
+    ctry  = info.match(/(CTRY\s*\..+COUNTRY:\s*(.*))|(CTRY\s*\.\s*(.*)\s*:\s*.*)/)
     unless ctry.nil?
       @well_info.country = (ctry[2] or ctry[4]).strip
       return
     end
 
-    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s*:\s*SERVICE COMPANY)/)
+    srvc = info.match(/(SRVC\s*\..+SERVICE COMPANY:\s*(.*))|(SRVC\s*\.\s*(.*)\s*:\s*.*)/)
     unless srvc.nil?
       @well_info.service_company = (srvc[2] or srvc[4]).strip
       return
     end
 
-    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s*:\s*LOG DATE)/)
+    data = info.match(/(DATE\s*\..+LOG DATE:\s*(.*))|(DATE\s*\.\s*(.*)\s*:\s*.*)/)
     unless data.nil?
       @well_info.date_logged = (data[2] or data[4]).strip
       return
     end
 
-    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID)/)
+    uwi = info.match(/(UWI\s*\..+UNIQUE WELL ID:\s*(.*))|(UWI\s*\.\s*(.*)\s*:\s*.*)/)
     unless uwi.nil?
       @well_info.uwi = (uwi[2] or uwi[4]).strip
       return
     end
 
-    api = info.match(/(API\s*\..+UNIQUE WELL ID\s*:\s*(.*))|(API\s*\.\s*(.*)\s*:\s*UNIQUE WELL ID\s*)/)
+    api = info.match(/(API\s*\..+API\s*:\s*(.*))|(API\s*\.\s*(.*)\s*:\s*.*)/)
     unless api.nil?
       @well_info.api = (api[2] or api[4]).strip
       return

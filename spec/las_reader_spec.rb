@@ -74,6 +74,11 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las).to be_truthy }
     end
+    context "when loading LAS v2.0 file: 'Shamar-1.las'" do
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las).to be_truthy }
+    end
 
   end
 
@@ -146,6 +151,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las.well_name).to eq(well_name) }
     end
+    context "get well name from las v2.0 file 'Shamar-1.las'" do
+      well_name = "Shamar 1"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.well_name).to eq(well_name) }
+    end
   end
   describe CWLSLas, "Different Encoding Handling" do
     context "when loading file encoded in ISO-8859-15 but not specifying encoding" do
@@ -181,6 +192,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las.company_name).to eq(company_name) }
     end
+    context "get company name from las v2.0 file 'Shamar-1.las'" do
+      company_name = "Noble Petroleum, Inc."
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.company_name).to eq(company_name) }
+    end
   end
 
   describe CWLSLas, "#field_name" do
@@ -200,6 +217,12 @@ describe "CWLS LAS reader" do
       field_name = "Mid Grd Shoal/Trdng Bay"
       las = CWLSLas.new
       las.load_file(file_path+'/example24_check.las')
+      it { expect(las.field_name).to eq(field_name) }
+    end
+    context "get company name from las v2.0 file 'Shamar-1.las'" do
+      field_name = "WILDCAT"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
       it { expect(las.field_name).to eq(field_name) }
     end
   end
@@ -223,6 +246,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las.location).to eq(location) }
     end
+    context "get location from las v2.0 file 'Shamar-1.las'" do
+      location = "5S-13E-17"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.location).to eq(location) }
+    end
   end
 
   describe CWLSLas, "#province/state" do
@@ -244,6 +273,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las.state).to eq(state) }
     end
+    context "get state from las v2.0 file 'Shamar-1.las'" do
+      state = "Kansas"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.state).to eq(state) }
+    end
   end
 
   describe CWLSLas, "#service_company" do
@@ -259,6 +294,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example21.las')
       it { expect(las.service_company).to eq(service_company) }
     end
+    context "get service company from las v2.0 file 'Shamar-1.las'" do
+      service_company = "Log Tech"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.service_company).to eq(service_company) }
+    end
   end
 
   describe CWLSLas, "#log_date" do
@@ -272,6 +313,12 @@ describe "CWLS LAS reader" do
       log_date = "13-DEC-86"
       las = CWLSLas.new
       las.load_file(file_path+'/example21.las')
+      it { expect(las.log_date).to eq(log_date) }
+    end
+    context "get log date from las v2.0 file 'Shamar-1.las'" do
+      log_date = "02/06/2012"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
       it { expect(las.log_date).to eq(log_date) }
     end
   end
@@ -304,6 +351,12 @@ describe "CWLS LAS reader" do
       las.load_file(file_path+'/example24_check.las')
       it { expect(las.county).to eq(county) }
     end
+    context "get county from las v2.0 file 'Shamar-1.las'" do
+      county = "NEMAHA"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.county).to eq(county) }
+    end
   end
 
   describe CWLSLas, "#country" do
@@ -311,6 +364,12 @@ describe "CWLS LAS reader" do
       country = "US"
       las = CWLSLas.new
       las.load_file(file_path+'/example24_check.las')
+      it { expect(las.country).to eq(country) }
+    end
+    context "get country from las v2.0 file 'Shamar-1.las'" do
+      country = "US"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
       it { expect(las.country).to eq(country) }
     end
   end
