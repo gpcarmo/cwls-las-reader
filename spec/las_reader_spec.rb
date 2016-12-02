@@ -344,6 +344,15 @@ describe "CWLS LAS reader" do
     end
   end
 
+  describe CWLSLas, "#api" do
+    context "get API from las v2.0 file 'Shamar-1.las'" do
+      api = "15-131-20205"
+      las = CWLSLas.new
+      las.load_file(file_path+'/Shamar-1.las')
+      it { expect(las.api).to eq(api) }
+    end
+  end
+
   describe CWLSLas, "#county" do
     context "get county from las v2.0 file 'example24_check.las'" do
       county = "KENAI"

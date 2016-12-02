@@ -383,6 +383,19 @@ module LasReader
     self.well_info.date_logged
   end
 
+  # Returns the API () described in the file  
+  # 
+  # Example:
+  #   >> my_well = CWLSLas.new('my_well.las')
+  #   => #<CWLSLas>
+  #   >> my_well.api
+  #   => "15-131-20205"
+  #
+  
+  def api
+    self.well_info.api
+  end
+
   # Returns the UWI (UNIQUE WELL ID) described in the file  
   # 
   # Returns API if UWI not found (for locations outside Canada)
