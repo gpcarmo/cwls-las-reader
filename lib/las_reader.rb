@@ -219,35 +219,34 @@ module LasReader
             else
               raise "unsupported file format for #{line}"
             read_state = 0 # Unknow file format
-          end
-        else
-          case read_state
-          when 1
-            set_version(line.lstrip)
-          when 2
-            set_well_info(line.lstrip) 
-          when 3
-            set_curve_info(line.lstrip)
-          when 4
-            set_parameters(line.lstrip)
-          when 5
-            set_other_info(line) 
-          when 6
-            if self.wrap
-              temp_array = log_wrap_data(line,temp_array)
-            else
-              log_nowrap_data(line)
-            end 
-          end
+        end
+      else
+        case read_state
+        when 1
+          set_version(line.lstrip)
+        when 2
+          set_well_info(line.lstrip) 
+        when 3
+          set_curve_info(line.lstrip)
+        when 4
+          set_parameters(line.lstrip)
+        when 5
+          set_other_info(line) 
+        when 6
+          if self.wrap
+            temp_array = log_wrap_data(line,temp_array)
+          else
+            log_nowrap_data(line)
+          end 
         end
       end
     end
-
   end
+end
 
-  class CWLSLas
+class CWLSLas
 
-    include LasReader
+  include LasReader
 
   # Initialize CWLSLas object passing las file as argument
   # 
